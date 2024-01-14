@@ -1,19 +1,13 @@
 
 
 class Tweet:
+    def __init__(self, tweet_id, user_id, tweet_ts, tweet_text):
+        self.tweet_id = tweet_id
+        self.user_id = user_id
+        self.tweet_ts = tweet_ts
+        self.tweet_text = tweet_text
 
-    def __init__(self, user, content, timestamp):
-        self.user = user
-        self.content = content
-        self.timestamp = timestamp
-
-class User:
-
-    def __init__(self, username, followers, following, bio):
-        self.username = username
-        self.followers = followers
-        self.following = following
-        self.bio = bio
-
-    def __str__(self):
-        return f"User: {self.username}, Followers: {self.followers}, Following: {self.following}"
+class Follows:
+    def __init__(self, user_id, follows_id):
+        self.user_id = user_id
+        self.follows_id = follows_id

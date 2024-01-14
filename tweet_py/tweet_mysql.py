@@ -17,13 +17,13 @@ class TweetUserAPI:
         insert_one method of the DBUtils instance to execute it.
         """
         # insert SQL statement
-        sql = "INSERT INTO tweet (username, content, timestamp) VALUES (%s, %s, %s) "
+        sql = "INSERT INTO tweet (USER_ID, TWEET_TEXT, TIME_SUBMITTED) VALUES (%s, %s, %s) "
         # values of the tweet
         val = (tweet.user, tweet.content, tweet.timestamp)
         # insert usinig insert_one method
         self.dbu.insert_one(sql, val)
 
-    def get_user_tweets(self, username):
+    def get_user_tweets(self, userid):
         """
         This method takes a username as an argument and returns a list of Tweet objects 
         posted by the specified user. It constructs an SQL SELECT statement and 
@@ -32,10 +32,10 @@ class TweetUserAPI:
         """
         # obtain the tweets
         sql = """
-                SELECT tweet_id, username, content, timestamp
+                SELECT USER_ID, TWEET_TEXT, TIME_SUBMITTED
                 FROM tweet
-                WHERE username = '""" + username + """'
-                ORDER BY timestamp DESC
+                WHERE USER_ID = '""" + userid + """'
+                ORDER BY TIME_SUBMITTED DESC
                 LIMIT 10"""
         
         # create the dataframe

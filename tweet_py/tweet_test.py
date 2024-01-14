@@ -3,6 +3,7 @@ import os
 from tweet_mysql import TweetUserAPI
 from tweet_objects import User, Tweet
 import csv
+import pymysql 
 
 
 """
@@ -20,6 +21,23 @@ def main():
     tweet = Tweet("userid", "This is a new tweet.", "2022-01-01 00:00:00")
     api.post_tweet(tweet)
 """
+
+
+  
+def mysqlconnect(): 
+    # To connect MySQL database 
+    conn = pymysql.connect( 
+        host='localhost', 
+        user='root',  
+        password = "pass", 
+        db='College', 
+        ) 
+      
+    cur = conn.cursor() 
+  
+# Driver Code 
+if __name__ == "__main__" : 
+    mysqlconnect()
 
 
 def load_csv_file(api, filename):

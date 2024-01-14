@@ -2,8 +2,8 @@
 Tweet-User Database API for MySQL
 """
 
-from dbutils import DBUtils
-from tweet_objects import User, Tweet
+from tweet_dbutils import DBUtils
+from tweet_objects import Tweet, Follows
 
 class TweetUserAPI:
 
@@ -17,29 +17,29 @@ class TweetUserAPI:
         insert_one method of the DBUtils instance to execute it.
         """
         # insert SQL statement
-        sql = "INSERT INTO tweet (USER_ID, TWEET_TEXT, TIME_SUBMITTED) VALUES (%s, %s, %s) "
+        sql = "INSERT INTO TWEET (user_id, tweet_text) VALUES (%s, %s)"
         # values of the tweet
-        val = (tweet.user, tweet.content, tweet.timestamp)
-        # insert usinig insert_one method
+        val = (tweet.user_id, tweet.tweet_text)
+        # insert using insert_one method
         self.dbu.insert_one(sql, val)
 
-    def get_user_tweets(self, userid):
+    def get_user_tweets(self, user_id):
         """
-        This method takes a username as an argument and returns a list of Tweet objects 
+        This method takes a user_id as an argument and returns a list of Tweet objects 
         posted by the specified user. It constructs an SQL SELECT statement and 
         uses the execute method of the DBUtils instance to execute it. The returned data frame 
         is then used to create a list of Tweet objects.
         """
         # obtain the tweets
         sql = """
-                SELECT USER_ID, TWEET_TEXT, TIME_SUBMITTED
-                FROM tweet
-                WHERE USER_ID = '""" + userid + """'
-                ORDER BY TIME_SUBMITTED DESC
+                SELECT tweet_id, user_id, tweet_ts, tweet_text
+                FROM TWEET
+                WHERE user_id = %s
+                ORDER BY tweet_ts DESC
                 LIMIT 10"""
         
         # create the dataframe
-        df = self.dbu.execute(sql)
-        tweets = [Tweet(*df.iloc[i][1:]) for i in range(len(df))]
+        df = self.dbu.execute(sql, (user_id,))
+        tweets = [Tweet(*df.iloc[i]) for i in range(len(df))]
         # return the tweets 
         return tweets

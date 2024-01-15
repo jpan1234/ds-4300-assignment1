@@ -4,7 +4,6 @@ Tweet-User Database API for MySQL
 
 import random
 
-from pyparsing import col
 from tweet_dbutils import DBUtils
 from tweet_objects import Follows, Tweet
 

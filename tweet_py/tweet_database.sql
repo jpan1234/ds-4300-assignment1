@@ -7,10 +7,10 @@ FLUSH PRIVILEGES;
 
 -- create the database and tables for the tweet_py application
 
-CREATE DATABASE IF NOT EXISTS TweetDB;
+CREATE DATABASE IF NOT EXISTS Tweets;
 
 -- use the database
-USE TweetDB;
+USE Tweets;
 
 -- create tweets table
 DROP Tweets;

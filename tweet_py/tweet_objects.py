@@ -1,10 +1,8 @@
 
 
 class Tweet:
-    def __init__(self, tweet_id, user_id, tweet_ts, tweet_text):
-        self.tweet_id = tweet_id
+    def __init__(self, user_id, tweet_text):
         self.user_id = user_id
-        self.tweet_ts = tweet_ts
         self.tweet_text = tweet_text
 
 class Follows:

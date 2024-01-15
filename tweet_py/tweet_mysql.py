@@ -12,10 +12,10 @@ from tweet_objects import Follows, Tweet
 class TweetUserAPI:
     def __init__(self, user, password, database, host="localhost"):
         self.dbu = DBUtils(user, password, database, host)
-        self.dbu.create_indices(column="user_id", table="Tweets")
-        self.dbu.create_indices(column="tweet_ts", table="Tweets")
-        self.dbu.create_indices(column="follows_id", table="Follows")
-        self.dbu.create_indices(column="user_id", table="Follows")
+        # self.dbu.create_indices(column="user_id", table="Tweets")
+        # self.dbu.create_indices(column="tweet_ts", table="Tweets")
+        # self.dbu.create_indices(column="follows_id", table="Follows")
+        # self.dbu.create_indices(column="user_id", table="Follows")
 
     def post_tweet(self, tweet):
         """
@@ -24,7 +24,7 @@ class TweetUserAPI:
         insert_one method of the DBUtils instance to execute it.
         """
         # insert SQL statement
-        sql = "INSERT INTO TWEET (user_id, tweet_text) VALUES (%s, %s)"
+        sql = "INSERT INTO TWEETS (user_id, tweet_text) VALUES (%s, %s)"
         # values of the tweet
         val = (tweet.user_id, tweet.tweet_text)
         # insert using insert_one method
@@ -99,7 +99,7 @@ def get_min_max_user_id():
     return min_id, max_id
 
 
-def get_random_user_timeline(max_id, min_id=1):
+def get_random_user_timeline(self,max_id, min_id=1):
     """
     This function retrieves the timeline for a random user.
 

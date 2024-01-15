@@ -29,6 +29,13 @@ CREATE TABLE IF NOT EXISTS Follows (
     PRIMARY KEY (user_id, follows_id)
 );
 
+CREATE INDEX t_user_id_index ON Tweets ({user_id});
+
+CREATE INDEX t_tweet_ts_index ON Tweets ({tweet_ts});
+
+CREATE INDEX f_follows_id_index ON Follows ({follows_id});
+
+CREATE INDEX f_user_id_index ON Follows ({user_id});
 
 
 

@@ -2,10 +2,11 @@
 Tweet-User Database API for MySQL
 """
 
+import random
+
 from pyparsing import col
 from tweet_dbutils import DBUtils
 from tweet_objects import Follows, Tweet
-import random
 
 
 class TweetUserAPI:
@@ -38,7 +39,7 @@ class TweetUserAPI:
                 WHERE T.user_id = %s"""
 
         # create the dataframe
-        df = self.dbu.execute(sql, user_id) # type:ignore
+        df = self.dbu.execute(sql, user_id)  # type:ignore
         followees = [Follows(*df.iloc[i]) for i in range(len(df))]
         # return the followees
         return user_id, followees
@@ -52,11 +53,10 @@ class TweetUserAPI:
                 WHERE T.user_id = %s"""
 
         # create the dataframe
-        df = self.dbu.execute(sql, user_id) # type:ignore
-        following_count = df.iloc[0]['following_count']
+        df = self.dbu.execute(sql, user_id)  # type:ignore
+        following_count = df.iloc[0]["following_count"]
         # return the followees
         return following_count
-
 
     def get_timeline(self, user_id):
         """
@@ -79,6 +79,7 @@ class TweetUserAPI:
         timeline = [Tweet(*df.iloc[i]) for i in range(len(df))]
         # return the timeline
         return timeline
+
 
 def get_min_max_user_id():
     """

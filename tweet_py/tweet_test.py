@@ -2,6 +2,7 @@
 
 import csv
 import os
+
 import pymysql
 from tweet_mysql import TweetUserAPI
 from tweet_objects import Tweet, User
@@ -24,12 +25,7 @@ def read_tweet_csv(api, csv_data):
     """
 
     for row in csv_data:
-        one_tweet = Tweet(
-            int(row["tweet_id"]),
-            int(row["user_id"]),
-            row["tweet_ts"],
-            row["tweet_text"],
-        )
+        one_tweet = Tweet(int(row["user_id"]), row["tweet_text"])
         api.post_tweet(one_tweet)
 
 
@@ -44,6 +40,7 @@ def main(csv_file):
 
     # Load tweets data into sql database one at a time
     read_tweet_csv(api, csv_data)
+
 
 # Driver Code
 if __name__ == "__main__":

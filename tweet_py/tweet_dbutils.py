@@ -6,14 +6,14 @@ description: A collection of database utilities to make it easier
 to implement a database application
 """
 
-import mysql.connector
+import pymysql 
 import pandas as pd
 
 class DBUtils:
 
     def __init__(self, user, password, database, host="localhost"):
         """ Future work: Implement connection pooling """
-        self.con = mysql.connector.connect(
+        self.con = pymysql.connect(
             host=host,
             user=user,
             password=password,

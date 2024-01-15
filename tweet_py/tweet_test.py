@@ -22,35 +22,36 @@ def main():
     api.post_tweet(tweet)
 """
 
+# Establish a database connection
+connection = pymysql.connect(host='localhost',
+                             user='tweetuser',
+                             password='password',
+                             db='Tweets')
 
-  
-def mysqlconnect(): 
-    # To connect MySQL database 
-    conn = pymysql.connect( 
-        host='localhost', 
-        user='root',  
-        password = "pass", 
-        db='College', 
-        ) 
-      
-    cur = conn.cursor() 
-  
+try:
+    with connection.cursor() as cursor:
+        print(cursor)
+        # Open the CSV file
+        with open('hw1_data/follows.csv', 'r') as file:
+            csv_reader = csv.reader(file)
+            next(csv_reader)  # Skip the header row
+            for row in csv_reader:
+                # Insert each row into the Follows table
+                sql = "INSERT INTO Follows (user_id, follows_id) VALUES (%s, %s)"
+                cursor.execute(sql, row)
+
+    # Commit the changes
+    connection.commit()
+
+finally:
+    # Close the database connection
+    connection.close()
+"""
 # Driver Code 
 if __name__ == "__main__" : 
     mysqlconnect()
-
-
-def load_csv_file(api, filename):
-
-    # open the file
-    with open(filename, 'r') as file:
-        reader = csv.reader(file)
-        next(reader)  # Skip the header row
-        for row in reader:
-            follows = Follows(*row)
-            sql = "INSERT INTO FOLLOWS (user_id, follows_id) VALUES (%s, %s)"
-            api.dbu.insert_one(sql, (follows.user_id, follows.follows_id))
-
+"""
+"""
 # In your main function
 def main():
     # Authenticate
@@ -63,3 +64,5 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+"""

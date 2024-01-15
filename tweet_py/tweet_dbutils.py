@@ -22,21 +22,21 @@ class DBUtils:
 
     def close(self):
         """ Close or release a connection back to the connection pool """
-        self.con.close()
+        self.con.close() # type: ignore
         self.con = None
 
     def execute(self, query):
         """ Execute a select query and returns the result as a dataframe """
 
         # Step 1: Create cursor
-        rs = self.con.cursor()
+        rs = self.con.cursor() # type: ignore
 
         # Step 2: Execute the query
         rs.execute(query)
 
         # Step 3: Get the resulting rows and column names
         rows = rs.fetchall()
-        cols = list(rs.column_names)
+        cols = list(rs.column_names) # type: ignore
 
         # Step 4: Close the cursor
         rs.close()
@@ -54,9 +54,9 @@ class DBUtils:
         val (tuple): A tuple containing the values to be inserted.
 
         """
-        cursor = self.con.cursor()
+        cursor = self.con.cursor() # type: ignore
         cursor.execute(sql, val)
-        self.con.commit()
+        self.con.commit() # type: ignore
 
 
     def insert_many(self, sql: str, vals: list):
@@ -68,8 +68,8 @@ class DBUtils:
         vals (list): A list of tuples, where each tuple contains the values to be inserted in a row.
 
         """
-        cursor = self.con.cursor()
+        cursor = self.con.cursor() # type: ignore
         cursor.executemany(sql, vals)
-        self.con.commit()
+        self.con.commit() # type: ignore
 
 

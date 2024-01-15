@@ -1,4 +1,4 @@
-# creating user for this database
+-- creating user for this database
 CREATE USER 'tweetuser'@'localhost' IDENTIFIED BY 'password';
 GRANT ALL PRIVILEGES ON *.* TO 'tweetuser'@'localhost';
 GRANT SELECT, INSERT, UPDATE, DELETE ON Tweets.* TO 'tweetuser'@'localhost';
@@ -7,10 +7,10 @@ FLUSH PRIVILEGES;
 
 -- create the database and tables for the tweet_py application
 
-CREATE DATABASE IF NOT EXISTS Tweets;
+CREATE DATABASE IF NOT EXISTS TweetDB;
 
 -- use the database
-USE Tweets;
+USE TweetDB;
 
 -- create tweets table
 DROP Tweets;

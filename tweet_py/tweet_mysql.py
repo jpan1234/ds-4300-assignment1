@@ -12,10 +12,10 @@ from tweet_objects import Follows, Tweet
 class TweetUserAPI:
     def __init__(self, user, password, database, host="localhost"):
         self.dbu = DBUtils(user, password, database, host)
-        # self.dbu.create_indices(column="user_id", table="Tweets")
-        # self.dbu.create_indices(column="tweet_ts", table="Tweets")
-        # self.dbu.create_indices(column="follows_id", table="Follows")
-        # self.dbu.create_indices(column="user_id", table="Follows")
+        # self.dbu.create_indices(column="USER_ID", table="Tweets")
+        # self.dbu.create_indices(column="TWEET_TEXT", table="Tweets")
+        # self.dbu.create_indices(column="FOLLOWS_ID", table="Follows")
+        # self.dbu.create_indices(column="USER_ID", table="Follows")
 
     def post_tweet(self, tweet):
         """

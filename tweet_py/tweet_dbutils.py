@@ -6,7 +6,7 @@ description: A collection of database utilities to make it easier
 to implement a database application
 """
 
-import pymysql 
+import pymysql
 import pandas as pd
 
 class DBUtils:

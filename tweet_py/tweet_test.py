@@ -24,9 +24,9 @@ def main():
 
 # Establish a database connection
 connection = pymysql.connect(host='localhost',
-                             user='tweetuser',
-                             password='password',
-                             db='Tweets')
+                            user='tweetuser',
+                            password='password',
+                            db='Tweets')
 
 try:
     with connection.cursor() as cursor:

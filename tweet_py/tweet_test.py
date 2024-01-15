@@ -1,3 +1,5 @@
+# Part 1 of Homework 1: Posting Tweets
+
 import csv
 import os
 import pymysql
@@ -8,6 +10,7 @@ from tweet_objects import Tweet, User
 connection = pymysql.connect(
     host="localhost", user="tweetuser", password="password", db="Tweets"
 )
+
 
 def read_tweet_csv(api, csv_data):
     """
@@ -41,12 +44,6 @@ def main(csv_file):
 
     # Load tweets data into sql database one at a time
     read_tweet_csv(api, csv_data)
-
-    # Get timeline for a specific user
-    tweets = api.get_timeline("userid")
-    for t in tweets:
-        print(t)
-
 
 # Driver Code
 if __name__ == "__main__":

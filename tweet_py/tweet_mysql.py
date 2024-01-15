@@ -2,6 +2,7 @@
 Tweet-User Database API for MySQL
 """
 
+from pyparsing import col
 from tweet_dbutils import DBUtils
 from tweet_objects import Follows, Tweet
 
@@ -9,6 +10,10 @@ from tweet_objects import Follows, Tweet
 class TweetUserAPI:
     def __init__(self, user, password, database, host="localhost"):
         self.dbu = DBUtils(user, password, database, host)
+        self.dbu.create_indices(column="user_id", table="Tweets")
+        self.dbu.create_indices(column="tweet_ts", table="Tweets")
+        self.dbu.create_indices(column="follows_id", table="Follows")
+        self.dbu.create_indices(column="user_id", table="Follows")
 
     def post_tweet(self, tweet):
         """
@@ -73,3 +78,36 @@ class TweetUserAPI:
         timeline = [Tweet(*df.iloc[i]) for i in range(len(df))]
         # return the timeline
         return timeline
+
+def get_min_max_user_id():
+    """
+    This function retrieves the minimum and maximum user_id from the users table in the database.
+
+    Returns:
+    tuple: A tuple containing the minimum and maximum user_id.
+    """
+    # Connect to the database
+    conn = your_database_connection()
+
+    # Get the min and max user_id
+    cursor = conn.cursor()
+    cursor.execute("SELECT MIN(user_id), MAX(user_id) FROM users")
+    min_id, max_id = cursor.fetchone()
+
+    return min_id, max_id
+
+
+def get_random_user_timeline(max_id, min_id=1):
+    """
+    This function retrieves the timeline for a random user.
+
+    Returns:
+    list: A list of Tweet objects representing the timeline for a random user.
+    """
+    # Generate a random user_id
+    random_id = random.randint(min_id, max_id)
+
+    # Get the timeline for the random user
+    timeline = get_timeline(random_id)
+
+    return timeline

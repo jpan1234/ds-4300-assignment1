@@ -72,4 +72,15 @@ class DBUtils:
         cursor.executemany(sql, vals)
         self.con.commit() # type: ignore
 
+    def create_indices(self, column, table):
+        """
+        This method creates an index on the specified column of the specified table if it does not already exist.
+        """
+        # check if the index exists
+        sql = f"SHOW INDEX FROM {table} WHERE Key_name = '{column}_index'"
+        index_exists = self.execute(sql)
 
+        # if the index does not exist, create it
+        if index_exists.empty:
+            sql = f"CREATE INDEX {column}_index ON {table} ({column})"
+            self.execute(sql)

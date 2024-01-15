@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS Tweets (
 );
 
 -- create follows table
-DROP Follows;
+--DROP Follows;
 CREATE TABLE IF NOT EXISTS Follows (
     user_id INT,
     follows_id INT,

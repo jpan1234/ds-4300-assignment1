@@ -1,6 +1,5 @@
 import csv
 import os
-
 import pymysql
 from tweet_mysql import TweetUserAPI
 from tweet_objects import Tweet, User
@@ -9,48 +8,6 @@ from tweet_objects import Tweet, User
 connection = pymysql.connect(
     host="localhost", user="tweetuser", password="password", db="Tweets"
 )
-
-
-def main(csv_file):
-    # Open the CSV file once to get the data object,
-    # then can get each row with the read_tweet_csv function instead of reading the file each function call
-    csv_data = csv.DictReader(open(csv_file))
-    # Authenticate
-    api = TweetUserAPI(
-        os.environ["TWEET_USER"], os.environ["TWEET_PASSWORD"], "tweetuser"
-    )
-
-    # Load tweets data into sql database one at a time
-    read_tweet_csv(api, csv_data)
-
-    # Get timeline for a specific user
-    tweets = api.get_timeline("userid")
-    for t in tweets:
-        print(t)
-
-
-"""
-inserting into follows table
-"""
-try:
-    with connection.cursor() as cursor:
-        print(cursor)
-        # Open the CSV file
-        with open("hw1_data/follows.csv", "r") as file:
-            csv_reader = csv.reader(file)
-            next(csv_reader)  # Skip the header row
-            for row in csv_reader:
-                # Insert each row into the Follows table
-                sql = "INSERT INTO Follows (user_id, follows_id) VALUES (%s, %s)"
-                cursor.execute(sql, row)
-
-    # Commit the changes
-    connection.commit()
-
-finally:
-    # Close the database connection
-    connection.close()
-
 
 def read_tweet_csv(api, csv_data):
     """
@@ -73,10 +30,28 @@ def read_tweet_csv(api, csv_data):
         api.post_tweet(one_tweet)
 
 
+def main(csv_file):
+    # Open the CSV file once to get the data object,
+    # then can get each row with the read_tweet_csv function instead of reading the file each function call
+    csv_data = csv.DictReader(open(csv_file))
+    # Authenticate
+    api = TweetUserAPI(
+        os.environ["TWEET_USER"], os.environ["TWEET_PASSWORD"], "tweetuser"
+    )
+
+    # Load tweets data into sql database one at a time
+    read_tweet_csv(api, csv_data)
+
+    # Get timeline for a specific user
+    tweets = api.get_timeline("userid")
+    for t in tweets:
+        print(t)
+
+
 # Driver Code
 if __name__ == "__main__":
     main(
-        filename="hw1_data/tweets.csv"
+        csv_file="hw1_data/tweets_sample.csv"
     )  # set filename to tweets to initialize tweets table
 
 """

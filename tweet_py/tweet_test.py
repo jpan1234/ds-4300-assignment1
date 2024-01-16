@@ -6,6 +6,11 @@ import os
 import pymysql
 from tweet_mysql import TweetUserAPI
 from tweet_objects import Tweet, User
+from dotenv import load_dotenv, dotenv_values
+
+# load environmental variables 
+# not included in this filepath
+load_dotenv()
 
 # Establish a database connection
 connection = pymysql.connect(
@@ -35,8 +40,8 @@ def main(csv_file):
     csv_data = csv.DictReader(open(csv_file))
     # Authenticate
     api = TweetUserAPI(
-        os.environ["TWEET_USER"], os.environ["TWEET_PASSWORD"], "tweetuser"
-    )
+        os.getenv("TWEET_USER"), os.getenv("TWEET_PASSWORD"), 'Tweets')
+
 
     # Load tweets data into sql database one at a time
     read_tweet_csv(api, csv_data)

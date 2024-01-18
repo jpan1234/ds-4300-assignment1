@@ -65,16 +65,16 @@ class TweetUserAPI:
         is then used to create a list of Tweet objects.
         """
         # obtain the tweets
-        sql = """
+        sql = f"""
             SELECT T.tweet_id, T.user_id, T.tweet_ts, T.tweet_text
             FROM Tweets T
             INNER JOIN Follows F ON T.user_id = F.follows_id
-            WHERE T.user_id = %s
+            WHERE T.user_id = {user_id}
             ORDER BY T.tweet_ts DESC
             LIMIT 10"""
 
         # create the dataframe
-        df = self.dbu.execute(sql, user_id)  # type:ignore
+        df = self.dbu.execute(sql, user_id)  
         timeline = [Tweet(*df.iloc[i]) for i in range(len(df))]
         # return the timeline
         return timeline

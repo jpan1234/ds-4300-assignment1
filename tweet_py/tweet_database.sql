@@ -12,7 +12,7 @@ CREATE DATABASE IF NOT EXISTS Tweets;
 USE Tweets;
 
 -- create tweets table
-DROP Tweets;
+TRUNCATE TABLE Tweets.Tweets;
 CREATE TABLE IF NOT EXISTS Tweets (
     tweet_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT,
@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS Tweets (
 );
 
 -- create follows table
---DROP Follows;
+--DROP TABLE Follows;
 CREATE TABLE IF NOT EXISTS Follows (
     user_id INT,
     follows_id INT,
@@ -37,4 +37,9 @@ CREATE INDEX f_follows_id_index ON Follows ({follows_id});
 CREATE INDEX f_user_id_index ON Follows ({user_id});
 
 
-
+SELECT T.tweet_id, T.user_id, T.tweet_ts, T.tweet_text
+            FROM Tweets T
+            INNER JOIN Follows F ON T.user_id = F.follows_id
+            WHERE T.user_id = 1
+            ORDER BY T.tweet_ts DESC
+            LIMIT 10;

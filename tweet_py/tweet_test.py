@@ -8,7 +8,7 @@ from tweet_mysql import TweetUserAPI
 from tweet_objects import Tweet, User
 from dotenv import load_dotenv, dotenv_values
 
-# load environmental variables 
+# load environmental variables
 # not included in this filepath
 load_dotenv()
 

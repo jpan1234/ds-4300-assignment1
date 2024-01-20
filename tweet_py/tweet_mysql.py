@@ -13,7 +13,7 @@ class TweetUserAPI:
     def __init__(self, user, password, database, host="localhost"):
         self.dbu = DBUtils(user, password, database, host)
 
-    def post_tweet(self, tweet, api_calls=None, track=True):
+    def post_tweet(self, tweet, track=True, *, api_calls=0):
         """
         This method takes a Tweet object as an argument and inserts a new record into the
         tweet table in the database. It constructs an SQL INSERT statement and uses the
@@ -22,10 +22,6 @@ class TweetUserAPI:
 
         if track and api_calls is None:
             api_calls = 0
-
-        # Get the current date and time
-        if tweet.tweet_ts is None:
-            tweet.tweet_ts = datetime.now()
 
         # insert SQL statement
         sql = "INSERT INTO TWEETS (user_id, tweet_text, tweet_ts) VALUES (%s, %s, %s)"
@@ -98,7 +94,7 @@ class TweetUserAPI:
 
         return df["user_id"].tolist()
 
-    def get_random_timeline(self, api_calls=None, track=True):
+    def get_random_timeline(self, track=True, *, api_calls=0):
         """
         Gets a number of timelines for random users
 

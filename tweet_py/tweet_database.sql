@@ -12,7 +12,7 @@ CREATE DATABASE IF NOT EXISTS Tweets;
 USE Tweets;
 
 -- create tweets table
-TRUNCATE TABLE Tweets.Tweets;
+DROP TABLE Tweets;
 CREATE TABLE IF NOT EXISTS Tweets (
     tweet_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT,
@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS Tweets (
 );
 
 -- create follows table
---DROP TABLE Follows;
+-- DROP TABLE Follows;
 CREATE TABLE IF NOT EXISTS Follows (
     user_id INT,
     follows_id INT,

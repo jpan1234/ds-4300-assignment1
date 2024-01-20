@@ -21,11 +21,12 @@ class TweetUserAPI:
         """
 
         # Get the current date and time
+        current_timestamp = datetime.now()
 
         # insert SQL statement
         sql = "INSERT INTO TWEETS (user_id, tweet_text, tweet_ts) VALUES (%s, %s, %s)"
         # values of the tweet
-        val = (tweet.user_id, tweet.tweet_text, tweet.current_timestamp)
+        val = (tweet.user_id, tweet.tweet_text, tweet.tweet_ts)
         # insert using insert_one method
         self.dbu.insert_one(sql, val)
 
@@ -76,7 +77,8 @@ class TweetUserAPI:
             """
 
         # create the dataframe
-        df = self.dbu.execute(sql, user_id)
+        df = self.dbu.execute(sql)
+        
         timeline = [Tweet(*df.iloc[i]) for i in range(len(df))]
         # return the timeline
         return timeline
@@ -89,6 +91,7 @@ class TweetUserAPI:
             A list of user_ids
         """
 
+        # get distinct user_ids from Tweets table
         sql = "SELECT DISTINCT user_id FROM Tweets;"
         df = self.dbu.execute(sql)
 

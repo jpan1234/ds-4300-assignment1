@@ -3,7 +3,7 @@ Tweet-User Database API for MySQL
 """
 
 import random
-
+from datetime import datetime
 from tweet_dbutils import DBUtils
 from tweet_objects import Follows, Tweet
 
@@ -11,10 +11,6 @@ from tweet_objects import Follows, Tweet
 class TweetUserAPI:
     def __init__(self, user, password, database, host="localhost"):
         self.dbu = DBUtils(user, password, database, host)
-        # self.dbu.create_indices(column="USER_ID", table="Tweets")
-        # self.dbu.create_indices(column="TWEET_TEXT", table="Tweets")
-        # self.dbu.create_indices(column="FOLLOWS_ID", table="Follows")
-        # self.dbu.create_indices(column="USER_ID", table="Follows")
 
     def post_tweet(self, tweet):
         """
@@ -22,10 +18,18 @@ class TweetUserAPI:
         tweet table in the database. It constructs an SQL INSERT statement and uses the
         insert_one method of the DBUtils instance to execute it.
         """
+
+    
+
+        # Get the current date and time
+        current_timestamp = datetime.now()
+
+        print(current_timestamp)
+
         # insert SQL statement
-        sql = "INSERT INTO TWEETS (user_id, tweet_text) VALUES (%s, %s)"
+        sql = "INSERT INTO TWEETS (user_id, tweet_text, tweet_ts) VALUES (%s, %s, %s)"
         # values of the tweet
-        val = (tweet.user_id, tweet.tweet_text)
+        val = (tweet.user_id, tweet.tweet_text, tweet.current_timestamp)
         # insert using insert_one method
         self.dbu.insert_one(sql, val)
 
@@ -66,12 +70,14 @@ class TweetUserAPI:
         """
         # obtain the tweets
         sql = f"""
-            SELECT T.tweet_id, T.user_id, T.tweet_ts, T.tweet_text
-            FROM Tweets T
-            INNER JOIN Follows F ON T.user_id = F.follows_id
-            WHERE T.user_id = {user_id}
+            SELECT DISTINCT F.follows_id, T.tweet_text, T.tweet_ts
+            FROM Follows F
+            INNER JOIN Tweets T on F.follows_id = T.user_id
+            WHERE F.follows_id IN (SELECT follows_id FROM Follows WHERE user_id = {user_id})
+            AND F.user_id = {user_id}
             ORDER BY T.tweet_ts DESC
-            LIMIT 10"""
+            LIMIT 10;
+            """
 
         # create the dataframe
         df = self.dbu.execute(sql, user_id)
@@ -80,35 +86,17 @@ class TweetUserAPI:
         return timeline
 
 
-def get_min_max_user_id():
-    """
-    This function retrieves the minimum and maximum user_id from the users table in the database.
+    def get_user_ids(self):
+        """
+        Gets all user_ids from the Tweets table
 
-    Returns:
-    tuple: A tuple containing the minimum and maximum user_id.
-    """
-    # Connect to the database
-    conn = your_database_connection()
+        Returns:
+            A list of user_ids
+        """
 
-    # Get the min and max user_id
-    cursor = conn.cursor()
-    cursor.execute("SELECT MIN(user_id), MAX(user_id) FROM users")
-    min_id, max_id = cursor.fetchone()
+        sql = "SELECT DISTINCT user_id FROM Tweets;"
+        df = self.dbu.execute(sql)
 
-    return min_id, max_id
+        return df['user_id'].tolist()
 
 
-def get_random_user_timeline(self,max_id, min_id=1):
-    """
-    This function retrieves the timeline for a random user.
-
-    Returns:
-    list: A list of Tweet objects representing the timeline for a random user.
-    """
-    # Generate a random user_id
-    random_id = random.randint(min_id, max_id)
-
-    # Get the timeline for the random user
-    timeline = get_timeline(random_id)
-
-    return timeline

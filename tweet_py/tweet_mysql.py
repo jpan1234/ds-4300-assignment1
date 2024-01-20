@@ -4,6 +4,7 @@ Tweet-User Database API for MySQL
 
 import random
 from datetime import datetime
+
 from tweet_dbutils import DBUtils
 from tweet_objects import Follows, Tweet
 
@@ -19,12 +20,7 @@ class TweetUserAPI:
         insert_one method of the DBUtils instance to execute it.
         """
 
-    
-
         # Get the current date and time
-        current_timestamp = datetime.now()
-
-        print(current_timestamp)
 
         # insert SQL statement
         sql = "INSERT INTO TWEETS (user_id, tweet_text, tweet_ts) VALUES (%s, %s, %s)"
@@ -85,7 +81,6 @@ class TweetUserAPI:
         # return the timeline
         return timeline
 
-
     def get_user_ids(self):
         """
         Gets all user_ids from the Tweets table
@@ -97,6 +92,4 @@ class TweetUserAPI:
         sql = "SELECT DISTINCT user_id FROM Tweets;"
         df = self.dbu.execute(sql)
 
-        return df['user_id'].tolist()
-
-
+        return df["user_id"].tolist()

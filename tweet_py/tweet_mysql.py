@@ -74,7 +74,7 @@ class TweetUserAPI:
             LIMIT 10"""
 
         # create the dataframe
-        df = self.dbu.execute(sql, user_id)  
+        df = self.dbu.execute(sql, user_id)
         timeline = [Tweet(*df.iloc[i]) for i in range(len(df))]
         # return the timeline
         return timeline

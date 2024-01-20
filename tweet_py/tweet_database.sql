@@ -28,13 +28,13 @@ CREATE TABLE IF NOT EXISTS Follows (
     PRIMARY KEY (user_id, follows_id)
 );
 
-CREATE INDEX t_user_id_index ON Tweets ({user_id});
+CREATE INDEX t_user_id_index ON Tweets (user_id);
 
-CREATE INDEX t_tweet_ts_index ON Tweets ({tweet_ts});
+CREATE INDEX t_tweet_ts_index ON Tweets (tweet_ts);
 
-CREATE INDEX f_follows_id_index ON Follows ({follows_id});
+CREATE INDEX f_follows_id_index ON Follows (follows_id);
 
-CREATE INDEX f_user_id_index ON Follows ({user_id});
+CREATE INDEX f_user_id_index ON Follows (user_id);
 
 
 SELECT T.tweet_id, T.user_id, T.tweet_ts, T.tweet_text
@@ -43,3 +43,13 @@ SELECT T.tweet_id, T.user_id, T.tweet_ts, T.tweet_text
             WHERE T.user_id = 1
             ORDER BY T.tweet_ts DESC
             LIMIT 10;
+
+CREATE PROCEDURE get_timeline(IN user_id INT);
+BEGIN
+    SELECT T.tweet_id, T.user_id, T.tweet_ts, T.tweet_text
+    FROM Tweets T
+    INNER JOIN Follows F ON T.user_id = F.follows_id
+    WHERE T.user_id = user_id
+    ORDER BY T.tweet_ts DESC
+    LIMIT 10;
+END;

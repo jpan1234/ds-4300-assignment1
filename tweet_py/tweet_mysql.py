@@ -2,10 +2,8 @@
 Tweet-User Database API for MySQL
 """
 
-import functools
 import random
 import time
-from datetime import datetime
 
 from tweet_dbutils import DBUtils
 from tweet_objects import Follows, Tweet

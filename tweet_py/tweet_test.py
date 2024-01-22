@@ -2,15 +2,10 @@
 
 import csv
 import os
-import random
-import time
-from datetime import datetime
-from pprint import pprint
 
-import dotenv
-import pymysql
-from dotenv import dotenv_values, load_dotenv
-from pymysql import cursors
+from datetime import datetime
+
+from dotenv import load_dotenv
 from tweet_mysql import TweetUserAPI
 from tweet_objects import Tweet
 

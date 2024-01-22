@@ -6,8 +6,6 @@ import random
 import time
 from datetime import datetime
 from pprint import pprint
-from functools import partial
-
 
 import dotenv
 import pymysql
@@ -36,7 +34,7 @@ def get_connection(host, user, password, db):
     return connection
 
 
-def read_tweet_csv(api, csv_data, track=True, *, api_calls=0):
+def read_tweet_csv(api, csv_data, track=True):
     """
     Reads a CSV file and returns a list of Tweet objects
 
@@ -49,47 +47,10 @@ def read_tweet_csv(api, csv_data, track=True, *, api_calls=0):
 
     for row in csv_data:
         one_tweet = Tweet(int(row["USER_ID"]), row["TWEET_TEXT"], datetime.now())
-        api_calls = api.post_tweet(one_tweet, api_calls=api_calls)
+        api.post_tweet(one_tweet)
 
     if track:
-        return api_calls
-
-
-def api_tracker(api, call_function, num_iterations=30, per_second=True):
-    """
-    Tracks the number of API calls made when getting random timelines
-
-    Args:
-        api: An instance of TweetUserAPI
-        num_timelines: The number of timelines to get
-    """
-
-    # Initialize API call counter
-    api_calls = 0
-
-    # Record start time
-    start_time = time.time()
-
-    # Run get_random_timelines and increment API call counter
-    for _ in range(num_iterations):
-        api_calls, *_ = call_function(
-            api_calls=api_calls
-        )  # will use the api most likely
-
-    # Record end time
-    end_time = time.time()
-
-    # Print total number of API calls and API calls per second
-    print(f"Total API calls: {api_calls}")
-
-    if per_second is True:
-        # Calculate elapsed time
-        elapsed_time = end_time - start_time
-
-        # Calculate API calls per second
-        api_calls_per_second = api_calls / elapsed_time
-
-        print(f"API calls per second: {api_calls_per_second}")
+        print(f"Number of API calls: {api.post_tweet.calls}")
 
 
 def main(csv_file):
@@ -98,14 +59,9 @@ def main(csv_file):
     csv_data = csv.DictReader(open(csv_file))
     # Authenticate
     api = TweetUserAPI(os.getenv("TWEET_USER"), os.getenv("TWEET_PASSWORD"), "Tweets")
-
-    read_tweet_csv_partial = partial(read_tweet_csv, api, csv_data)
-    get_random_timeline_partial = partial(api.get_random_timeline)
     # Load tweets data into sql database one at a time
-    api_tracker(api, read_tweet_csv_partial, num_iterations=1, per_second=False)
-
-    # Get random timelines
-    api_tracker(api, get_random_timeline_partial, num_iterations=30, per_second=True)
+    read_tweet_csv(api, csv_data)
+    api.get_random_timelines(30, track=True)
 
 
 # Driver Code

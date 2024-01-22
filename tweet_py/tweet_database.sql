@@ -1,6 +1,6 @@
 -- creating user for this database
 CREATE USER 'tweetuser'@'localhost' IDENTIFIED BY 'password';
-GRANT SELECT, INSERT, UPDATE, DELETE ON Tweets.* TO 'tweetuser'@'localhost';
+GRANT SELECT, INSERT, UPDATE, DELETE, EXECUTE ON Tweets.* TO 'tweetuser'@'localhost';
 FLUSH PRIVILEGES;
 
 

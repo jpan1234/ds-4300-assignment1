@@ -21,7 +21,6 @@ CREATE TABLE IF NOT EXISTS Tweets (
 );
 
 -- create follows table
--- DROP TABLE Follows;
 CREATE TABLE IF NOT EXISTS Follows (
     user_id INT,
     follows_id INT,
@@ -36,13 +35,7 @@ CREATE INDEX f_follows_id_index ON Follows (follows_id);
 
 CREATE INDEX f_user_id_index ON Follows (user_id);
 
--- SELECT T.tweet_id, T.user_id, T.tweet_ts, T.tweet_text
---             FROM Tweets T
---             INNER JOIN Follows F ON T.user_id = F.follows_id
---             WHERE T.user_id = 1
---             ORDER BY T.tweet_ts DESC
---             LIMIT 10;
-
+-- create stored procedure to get timeline
 DELIMITER $$
 CREATE PROCEDURE get_timeline(IN check_user_id INT)
 BEGIN
@@ -55,29 +48,3 @@ BEGIN
     LIMIT 10;
 END $$
 DELIMITER ;
-
---         FROM Tweets T
---         LEFT JOIN Follows F ON T.user_id = F.follows_id
---         WHERE T.user_id = 3
---         ORDER BY T.tweet_ts DESC
---         LIMIT 10;
-
-
--- SELECT * FROM Follows WHERE user_id = 2281;
-
--- SELECT * FROM Tweets WHERE user_id = 2281;
-
--- SELECT DISTINCT T.user_id, F.follows_id
--- FROM Tweets T
--- INNER JOIN Follows F on T.user_id = F.user_id
--- WHERE T.user_id = 2281;
-
-
--- SELECT * FROM Follows;
-
--- SELECT DISTINCT T.tweet_text, F.follows_id, T.tweet_ts
--- FROM Follows F
--- INNER JOIN Tweets T on F.follows_id = T.user_id
--- WHERE F.follows_id IN (SELECT follows_id FROM Follows WHERE user_id = 2281)
--- AND F.user_id = 2281
--- LIMIT 10;

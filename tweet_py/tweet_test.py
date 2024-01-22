@@ -21,18 +21,6 @@ current_dir = os.chdir(os.path.dirname(__file__))
 # not included in this filepath
 load_dotenv()
 
-# Establish a database connection
-
-
-def get_connection(host, user, password, db):
-    """
-    Returns a connection object to a MySQL database
-    """
-    connection = pymysql.connect(
-        host=host, user=user, password=password, db=db, cursorclass=cursors.DictCursor
-    )
-    return connection
-
 
 def read_tweet_csv(api, csv_data, track=True):
     """

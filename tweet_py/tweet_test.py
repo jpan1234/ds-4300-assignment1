@@ -50,7 +50,7 @@ def read_tweet_csv(api, csv_data, track=True):
         api.post_tweet(one_tweet)
 
     if track:
-        print(f"Number of API calls: {api.post_tweet.calls}")
+        print(f"Number of API calls per second: {api.post_tweet.calls_per_second}")
 
 
 def main(csv_file):

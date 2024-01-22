@@ -148,6 +148,4 @@ class TweetUserAPI:
             print(f"Timeline for user_id {user_id}: {unpacked_timeline}")
 
         if track:
-            return print(
-                f"Number of API calls: {self.get_timeline.calls} \n API calls per second: {self.get_timeline.calls_per_second}"
-            )
+            return print(f"API calls per second: {self.get_timeline.calls_per_second}")
